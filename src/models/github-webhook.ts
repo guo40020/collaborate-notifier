@@ -152,7 +152,21 @@ export interface IGithubWebHookPullRequestEventPayload
   organization: IGithubWebHookOrganization;
 }
 
-export interface IGithubWebHookPullRequestReviewEventPayload extends IGithubWebHookPullRequestEventPayload {
-  action: "created" | "edited" | "deleted";
+export interface IGithubWebHookPullRequestReview {
+  id: number;
+  user: IGithubWebHookUser;
+  body: string | null;
+  commit_id: string;
+  submitted_at: string;
+  state: string;
+  pull_request_url: string;
 }
 
+export interface IGithubWebHookPullRequestReviewEventPayload extends IGithubWebHookPullRequestEventPayload {
+  action: "submitted" | "edited" | "dismissed";
+  review: IGithubWebHookPullRequestReview;
+}
+
+export interface IGithubWebHookPullRequestReviewCommentEventPayload extends IGithubWebHookPullRequestEventPayload {
+  action: "created" | "edited" | "deleted";
+}
