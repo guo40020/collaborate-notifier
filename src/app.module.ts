@@ -1,7 +1,5 @@
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import configLoader from "./config/config-loader";
 import { configSchema } from "./config/config-validate-schema";
 import { GitHubWebhookAdapterModule } from "./webhook-adapters/github-webhook-adapter/github-webhook-adaptor.module";
@@ -15,8 +13,6 @@ import { GitHubWebhookAdapterModule } from "./webhook-adapters/github-webhook-ad
       validationSchema: configSchema,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {
 }
