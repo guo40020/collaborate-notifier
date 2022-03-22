@@ -23,7 +23,7 @@ export class DataService {
   private db: Db;
   private logger: Logger;
 
-  constructor(@Inject() private config: ConfigService) {
+  constructor(private config: ConfigService) {
     this.mongo = new MongoClient(this.config.get("DB.URI"))
     this.mongo.connect()
     this.logger = new Logger(DataService.name)

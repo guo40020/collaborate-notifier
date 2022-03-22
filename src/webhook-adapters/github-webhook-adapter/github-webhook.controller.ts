@@ -18,7 +18,7 @@ import { GithubWebhookService } from "./github-webhook.service";
 
 @Controller("/webhooks/github/")
 export class GithubWebhookControler {
-  constructor(@Inject() private readonly githubService: GithubWebhookService) {}
+  constructor(private readonly githubService: GithubWebhookService) {}
 
   private readonly logger = new Logger(GithubWebhookControler.name, {
     timestamp: true,
