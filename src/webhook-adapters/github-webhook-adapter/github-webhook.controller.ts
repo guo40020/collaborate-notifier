@@ -7,7 +7,6 @@ import {
   HttpCode,
   Options,
   Logger,
-  Inject,
 } from "@nestjs/common";
 import {
   IGithubWebHookBaseModel,
@@ -17,10 +16,10 @@ import { GithubEventType } from "src/types/github-types";
 import { GithubWebhookService } from "./github-webhook.service";
 
 @Controller("/webhooks/github/")
-export class GithubWebhookControler {
+export class GithubWebhookController {
   constructor(private readonly githubService: GithubWebhookService) {}
 
-  private readonly logger = new Logger(GithubWebhookControler.name, {
+  private readonly logger = new Logger(GithubWebhookController.name, {
     timestamp: true,
   });
 

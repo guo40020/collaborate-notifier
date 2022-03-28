@@ -4,6 +4,5 @@ import { Body, Controller, Headers, Post } from "@nestjs/common";
 export class GitlabWebhookController {
   @Post("payload")
   public async payload(@Headers("X-Gitlab-Event") event: string, @Body() payload: string) {
-
   }
 }
