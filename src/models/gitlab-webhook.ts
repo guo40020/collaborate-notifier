@@ -65,9 +65,9 @@ export interface IGitlabChange {
     current: string;
   };
   labels: {
-    previous: IGitlabLabel[],
-    current: IGitlabLabel[],
-  }
+    previous: IGitlabLabel[];
+    current: IGitlabLabel[];
+  };
 }
 
 export interface IGitlabLabel {
@@ -109,10 +109,76 @@ export interface IGitlabMergeRequestObject {
   assignee: IGitlabUser;
 }
 
-export interface IBaseMergeRequestPayload {
+export interface IMergeRequestPayload {
   event_type: "merge_request";
+  object_kind: "merge_request";
   user: IGitlabUser;
   object_attributes: IGitlabMergeRequestObject;
   labels: IGitlabLabel[];
   changes: IGitlabChange;
+}
+
+export interface IGitlabDiffObject {
+  diff: string;
+  new_path: string;
+  old_path: string;
+  a_mode: string;
+  b_mode: string;
+  new_file: boolean;
+  renamed_file: boolean;
+  deleted_file: boolean;
+}
+
+export interface ICommitCommentObject {
+  id: number;
+  note: string;
+  noteable_type: "Commit";
+  author_id: number;
+  created_at: string;
+  updated_at: string;
+  project_id: number;
+  // type unknown
+  attachment: any;
+  // some kind of id
+  line_code: string | null;
+  commit_id: string;
+  notable_id: number | null;
+  system: boolean;
+  st_diff: IGitlabDiffObject | null;
+  url: string;
+}
+
+export interface IGitlabBaseCommentPayload {
+  object_kind: "note";
+  event_type: "note";
+  user: IGitlabUser;
+  project_id: number;
+  project: IGitlabProject;
+  repository: IGitlabRepository;
+}
+
+export interface IGitlabCommitCommentPayload extends IGitlabBaseCommentPayload {
+  commit: IGitlabCommit;
+}
+
+export interface IGitlabMrCommentPayload extends IGitlabBaseCommentPayload {
+  merge_request: IGitlabMergeRequestObject;
+}
+
+export interface IGitlabIssue {
+  id: number;
+  title: string;
+  assignee_ids: number[];
+  assignee_id: number | null;
+  author_id: number;
+  project_id: number;
+  created_at: string;
+  updated_at: string;
+  position: number;
+  branch_name: null | string;
+  description: string;
+  milestone_id: null | number;
+  state: string;
+  iid: number;
+  labels: IGitlabLabel[];
 }
