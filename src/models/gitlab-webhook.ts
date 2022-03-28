@@ -83,6 +83,8 @@ export interface IGitlabLabel {
   group_id: number;
 }
 
+export type NotableType = "Issue" | "MergeRequest" | "Commit"
+
 export interface IGitlabMergeRequestObject {
   id: number;
   target_branch: string;
@@ -129,10 +131,10 @@ export interface IGitlabDiffObject {
   deleted_file: boolean;
 }
 
-export interface ICommitCommentObject {
+export interface IBaseCommentObject<T extends NotableType = NotableType> {
   id: number;
   note: string;
-  noteable_type: "Commit";
+  noteable_type: T;
   author_id: number;
   created_at: string;
   updated_at: string;
@@ -155,14 +157,17 @@ export interface IGitlabBaseCommentPayload {
   project_id: number;
   project: IGitlabProject;
   repository: IGitlabRepository;
+  object_attributes: IBaseCommentObject;
 }
 
 export interface IGitlabCommitCommentPayload extends IGitlabBaseCommentPayload {
   commit: IGitlabCommit;
+  object_attributes: IBaseCommentObject<"Commit">;
 }
 
 export interface IGitlabMrCommentPayload extends IGitlabBaseCommentPayload {
   merge_request: IGitlabMergeRequestObject;
+  object_attributes: IBaseCommentObject<"MergeRequest">;
 }
 
 export interface IGitlabIssue {
@@ -181,4 +186,9 @@ export interface IGitlabIssue {
   state: string;
   iid: number;
   labels: IGitlabLabel[];
+}
+
+export interface IGitlabIssueCommentPayload extends IGitlabBaseCommentPayload {
+  issue: IGitlabIssue;
+  object_attributes: IBaseCommentObject<"Issue">;
 }
