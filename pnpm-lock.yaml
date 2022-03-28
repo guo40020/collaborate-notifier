@@ -6,8 +6,10 @@ specifiers:
   '@nestjs/config': ^2.0.0
   '@nestjs/core': ^8.0.0
   '@nestjs/platform-express': ^8.0.0
+  '@nestjs/schedule': ^1.0.2
   '@nestjs/schematics': ^8.0.0
   '@nestjs/testing': ^8.0.0
+  '@types/cron': ^1.7.3
   '@types/express': ^4.17.13
   '@types/jest': 27.4.1
   '@types/js-yaml': ^4.0.5
@@ -16,6 +18,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
   Octokit: npm:octokit@^1.7.1
+  axios: ^0.26.1
   cache-manager: ^3.6.0
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
@@ -42,7 +45,9 @@ dependencies:
   '@nestjs/config': 2.0.0_b8034d7883829e8dea958456cea5a5cb
   '@nestjs/core': 8.4.1_03a788a1eb0bf93a7b64e9ce96523e26
   '@nestjs/platform-express': 8.4.1_214a294e539403889bf33d78c1f08a26
+  '@nestjs/schedule': 1.0.2_891fcd1c5b0f2c9b3aea247fec3c8ce1
   Octokit: /octokit/1.7.1
+  axios: 0.26.1
   cache-manager: 3.6.0
   joi: 17.6.0
   js-yaml: 4.1.0
@@ -56,6 +61,7 @@ devDependencies:
   '@nestjs/cli': 8.2.3
   '@nestjs/schematics': 8.0.8_typescript@4.6.2
   '@nestjs/testing': 8.4.1_b3c51650b23a21e970a522b039aea674
+  '@types/cron': 1.7.3
   '@types/express': 4.17.13
   '@types/jest': 27.4.1
   '@types/js-yaml': 4.0.5
@@ -918,6 +924,20 @@ packages:
       tslib: 2.3.1
     dev: false
 
+  /@nestjs/schedule/1.0.2_891fcd1c5b0f2c9b3aea247fec3c8ce1:
+    resolution: {integrity: sha512-GGRehpSm0nCthYNxAGdTzondPrRvurtKnkQCzIb3Tccqq6PhfS2QiHMwDaCel5/4jhYbR/lZR9UsVr6KSJc2Xg==}
+    peerDependencies:
+      '@nestjs/common': ^6.10.11 || ^7.0.0 || ^8.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 8.4.1_b627b5aa5e6de80623ad8d197781b296
+      '@nestjs/core': 8.4.1_03a788a1eb0bf93a7b64e9ce96523e26
+      cron: 1.7.2
+      reflect-metadata: 0.1.13
+      uuid: 8.3.2
+    dev: false
+
   /@nestjs/schematics/8.0.8_chokidar@3.5.3+typescript@4.6.2:
     resolution: {integrity: sha512-xIIb5YnMQN/OJQ68+MCapy2bXvTxSWgINoqQbyZWkLL/yTIuROvZCdtV850NPGyr7f7l93VBP0ZPitbFIexy3Q==}
     peerDependencies:
@@ -1330,6 +1350,13 @@ packages:
 
   /@types/cookiejar/2.1.2:
     resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
+    dev: true
+
+  /@types/cron/1.7.3:
+    resolution: {integrity: sha512-iPmUXyIJG1Js+ldPYhOQcYU3kCAQ2FWrSkm1FJPoii2eYSn6wEW6onPukNTT0bfiflexNSRPl6KWmAIqS+36YA==}
+    dependencies:
+      '@types/node': 16.11.26
+      moment: 2.29.1
     dev: true
 
   /@types/eslint-scope/3.7.3:
@@ -2405,6 +2432,12 @@ packages:
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
+
+  /cron/1.7.2:
+    resolution: {integrity: sha512-+SaJ2OfeRvfQqwXQ2kgr0Y5pzBR/lijf5OpnnaruwWnmI799JfWr2jN2ItOV9s3A/+TFOt6mxvKzQq5F0Jp6VQ==}
+    dependencies:
+      moment-timezone: 0.5.34
+    dev: false
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -4343,6 +4376,15 @@ packages:
     dependencies:
       minimist: 1.2.5
     dev: false
+
+  /moment-timezone/0.5.34:
+    resolution: {integrity: sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==}
+    dependencies:
+      moment: 2.29.1
+    dev: false
+
+  /moment/2.29.1:
+    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
   /mongodb-connection-string-url/2.5.2:
     resolution: {integrity: sha512-tWDyIG8cQlI5k3skB6ywaEA5F9f5OntrKKsT/Lteub2zgwSUlhqEN2inGgBTm8bpYJf8QYBdA/5naz65XDpczA==}
