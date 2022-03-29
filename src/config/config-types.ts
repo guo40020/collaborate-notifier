@@ -1,5 +1,5 @@
 export interface IFeishuConfiguration {
-  APP_KEY?: string;
+  APP_ID?: string;
   APP_SECRET?: string;
 }
 
