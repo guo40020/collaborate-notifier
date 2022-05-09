@@ -38,7 +38,6 @@ export class FeishuImService {
   }
 
   private async renewToken() {
-    try {
       const res = await axios.post<any, AxiosResponse<IGetAuthTokenResponse, IGetAuthTokenResponse>>(
         FEISHU_AUTH_TOKEN_URL,
         {
@@ -53,8 +52,8 @@ export class FeishuImService {
       );
 
       if (res.data.code !== 0) {
-        this.logger.error(`Got non-zero response code: ${res.data.code}, msg: ${res.data.msg}`);
-        throw new Error(`Got non-zero response code: ${res.data.code}, msg: ${res.data.msg}`)
+        this.logger.error(`Feishu Auth: Got non-zero response code: ${res.data.code}, msg: ${res.data.msg}`);
+        throw new Error(`Feishu Auth: Got non-zero response code: ${res.data.code}, msg: ${res.data.msg}`)
       }
 
       this.bearerToken = res.data.tenant_access_token;
@@ -74,15 +73,6 @@ export class FeishuImService {
       }, this.expiry);
       this.scheduleRegistry.addTimeout("feishu_token_renewal", renewTimeout);
 
-    } catch (e: unknown) {
-      const err = e as AxiosError<IGetAuthTokenResponse>;
-      this.logger.error(
-        `Failed to get feishu auth token: err: ${err.message} code: ${
-          err.response?.data?.code ?? "no code received"
-        } msg: ${err.response?.data?.msg ?? "no msg received"}`,
-      );
-      throw e;
-    }
   }
 
   public async initService() {
@@ -107,5 +97,10 @@ export class FeishuImService {
     await this.renewToken()
   }
 
-  public async sendCard() {}
+  public async sendCard() {
+    if (!this.enabled) {
+      this.logger.warn("Feishu adapter is disabled.")
+      return;
+    }
+  }
 }

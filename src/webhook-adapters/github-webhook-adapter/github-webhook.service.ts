@@ -4,6 +4,6 @@ import { IGithubWebHookPullRequestReviewEventPayload } from "src/models/github-w
 @Injectable()
 export class GithubWebhookService {
   async onPrReview(payload: IGithubWebHookPullRequestReviewEventPayload) {
-
+    
   }
 }

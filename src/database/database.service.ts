@@ -1,22 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Db, MongoClient, ObjectId } from "mongodb";
-import { ImPlatformType, RepoPlatformType, WatchScopeType } from "src/types/common";
-import {
-  ACTIVITY_WATCHERS,
-  EVENT_LOGS,
-  PR_ACTIVITY_WATCHERS,
-  USER_ACCESS_TOKEN,
-  USER_IM_ACCOUNT_DATA,
-} from "./collection-names";
-import {
-  IActivityWatchers,
-  IEventLog,
-  IIssueActivityWatchers,
-  IPrActivityWatchers,
-  IUserAccessTokens,
-  IUserImAccountData,
-} from "./types";
+import { Db, Filter, MongoClient, ObjectId } from "mongodb";
+import { ImPlatformType, RepoPlatformType } from "src/types/common";
+import { ACTIVITY_WATCHERS, EVENT_LOGS, USER_ACCESS_TOKEN, USER_IM_ACCOUNT_DATA } from "./collection-names";
+import { IActivityWatchers, IEventLog, IUserAccessTokens, IUserImAccountData } from "./types";
 
 interface IGetUserAccessTokenArgs {
   userId: ObjectId;
@@ -29,6 +16,13 @@ interface IGetUserImDataArgs {
   imPlatformId?: string;
   devPlatformId?: string;
   imPlatformName?: ImPlatformType;
+}
+
+export interface IGetWatcherArgs {
+  repoPlatform: RepoPlatformType;
+  repo?: string;
+  prNumber?: number;
+  issueNumber?: number;
 }
 
 @Injectable()
@@ -78,19 +72,21 @@ export class DataService {
     }
   }
 
-  public async getActivityWatchers(userId?: ObjectId, scope?: WatchScopeType) {
+  public async getActivityWatchers(args: IGetWatcherArgs) {
     const collection = this.db.collection<IActivityWatchers>(ACTIVITY_WATCHERS);
-    return collection.find({ userId, scope }).toArray();
-  }
-
-  public async getPrWatchers(prNumber: number, platform: RepoPlatformType) {
-    const collection = this.db.collection<IPrActivityWatchers>(PR_ACTIVITY_WATCHERS);
-    return collection.find({ prNumber, repoPlatform: platform }).toArray();
-  }
-
-  public async getIssueWatchers(issueNumber: number, platform: RepoPlatformType) {
-    const collection = this.db.collection<IIssueActivityWatchers>(PR_ACTIVITY_WATCHERS);
-    return collection.find({ issueNumber, repoPlatform: platform }).toArray();
+    const filter: Filter<IActivityWatchers> = { repoPlatform: args.repoPlatform };
+    const orFilters: Filter<IActivityWatchers>[] = [];
+    if (args.repo) {
+      orFilters.push({ repo: args.repo });
+    }
+    if (args.prNumber) {
+      orFilters.push({ prNumber: args.prNumber})
+    }
+    if (args.issueNumber) {
+      orFilters.push({ issueNumber: args.issueNumber })
+    }
+    filter["$or"] = orFilters;
+    return collection.find(filter).toArray();
   }
 
   public async logEvent(platform: string, event: string, payload: string) {

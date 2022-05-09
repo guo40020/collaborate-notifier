@@ -8,5 +8,8 @@ import { FeishuImService } from "./feishu.im.service";
   providers: [
     FeishuImService.provide
   ],
+  exports: [
+    FeishuImService,
+  ],
 })
 export class FeishuImModule {}

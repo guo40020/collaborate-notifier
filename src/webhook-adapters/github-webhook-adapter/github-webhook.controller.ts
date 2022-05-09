@@ -3,9 +3,7 @@ import {
   Post,
   Headers,
   Body,
-  Header,
   HttpCode,
-  Options,
   Logger,
 } from "@nestjs/common";
 import {
@@ -25,9 +23,6 @@ export class GithubWebhookController {
 
   @Post("payload")
   @HttpCode(204)
-  @Header("Access-Control-Allow-Origin", "*")
-  @Header("Access-Control-Allow-Headers", "*")
-  @Header("Access-Control-Allow-Methods", "*")
   public async payload(
     @Headers("X-GitHub-Event") event: GithubEventType,
     @Headers("X-GitHub-Delivery") guid: string,
@@ -44,11 +39,4 @@ export class GithubWebhookController {
         break;
     }
   }
-
-  @Options("payload")
-  @HttpCode(200)
-  @Header("Access-Control-Allow-Origin", "*")
-  @Header("Access-Control-Allow-Headers", "*")
-  @Header("Access-Control-Allow-Methods", "*")
-  public options() {}
 }

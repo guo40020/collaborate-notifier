@@ -6,9 +6,7 @@ export interface IUser {
   displayName: string;
 }
 
-
 export interface IUserAccessTokens {
-  _id: ObjectId;
   userId: ObjectId;
   platformId: string;
   platform: RepoPlatformType;
@@ -16,7 +14,6 @@ export interface IUserAccessTokens {
 }
 
 export interface IUserImAccountData<T = never> {
-  _id: ObjectId;
   userId: ObjectId;
   platformName: ImPlatformType;
   platformId: string;
@@ -24,23 +21,14 @@ export interface IUserImAccountData<T = never> {
 }
 
 export interface IActivityWatchers {
- _id: ObjectId;
- userId: ObjectId;
- scope: WatchScopeType;
-}
-
-export interface IPrActivityWatchers {
   _id: ObjectId;
   userId: ObjectId;
-  prNumber: number;
+  scope: WatchScopeType;
   repoPlatform: RepoPlatformType;
-}
-
-export interface IIssueActivityWatchers {
-  _id: ObjectId;
-  userId: ObjectId;
-  issueNumber: number;
-  repoPlatform: RepoPlatformType;
+  repo?: string;  // required for repo & collaboration type
+  prNumber?: number;  // required for pr type
+  issueNumber?: number;  // required for issue type
+  eventLevel?: number;  // required for systemEvents type
 }
 
 export interface IEventLog {
@@ -48,4 +36,3 @@ export interface IEventLog {
   platform: string;
   payload: string;
 }
-
